@@ -1,0 +1,5 @@
+#! /bin/bash
+
+    sudo /usr/bin/amdgpu-lib-refresh
+    sudo update-initramfs -c -k all
+
