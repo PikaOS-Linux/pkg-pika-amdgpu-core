@@ -272,6 +272,8 @@ rm -rf /opt/amdgpu/pika/vulkan/x86_64-linux-gnu || echo
 if [[ "${AMD64_AMDVLK_EXISTS}" != 0 ]]; then
 	mkdir -p /opt/amdgpu/pika/vulkan/x86_64-linux-gnu
 	for i in $(dpkg-query -L amdvlk:amd64 | grep /x86_64-linux-gnu/ ); do ln -sfv $i /opt/amdgpu/pika/vulkan/x86_64-linux-gnu/ ; done
+        mkdir -p /opt/amdgpu/share/vulkan/icd.d/
+        mv /etc/vulkan/icd.d/amd_icd*.json /opt/amdgpu/share/vulkan/icd.d/ || true
 fi
 
 ### Link i386 free vulkan packages
@@ -279,6 +281,9 @@ rm -rf /opt/amdgpu/pika/vulkan/i386-linux-gnu || echo
 if [[ "${I386_AMDVLK_EXISTS}" != 0 ]]; then
 	mkdir -p /opt/amdgpu/pika/vulkan/i386-linux-gnu
 	for i in $(dpkg-query -L amdvlk:i386 | grep /i386-linux-gnu/ ); do ln -sfv $i /opt/amdgpu/pika/vulkan/i386-linux-gnu/ ; done
+        mkdir -p /opt/amdgpu/share/vulkan/icd.d/
+        mv /etc/vulkan/icd.d/amd_icd*.json /opt/amdgpu/share/vulkan/icd.d/ || true
+
 fi
 
 ldconfig
