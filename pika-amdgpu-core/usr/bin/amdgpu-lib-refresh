@@ -9,6 +9,28 @@ export BIN_AMD_DISABLED=0
 export BIN_INTEL_DISABLED=0
 export ENC_EXISTS=0
 export AMF_EXISTS=0
+export AMD64_OPENCL_LEGACY_AMDGPU_PRO_ICD_EXISTS=0
+export AMD64_OCL_ICD_LIBOPENCL1_AMDGPU_PRO_EXISTS=0
+export AMD64_OCL_ICD_LIBOPENCL1_AMDGPU_PRO_DEV_EXISTS=0
+export I386_OPENCL_LEGACY_AMDGPU_PRO_ICD_EXISTS=0
+export I386_OCL_ICD_LIBOPENCL1_AMDGPU_PRO_EXISTS=0
+export I386_OCL_ICD_LIBOPENCL1_AMDGPU_PRO_DEV_EXISTS=0
+export AMD64_LIBGL1_AMDGPU_PRO_OGLP_EXT_EXISTS=0
+export AMD64_LIBGL1_AMDGPU_PRO_OGLP_GBM_EXISTS=0
+export AMD64_LIBEGL1_AMDGPU_PRO_OGLP_EXISTS=0
+export AMD64_LIBGL1_AMDGPU_PRO_OGLP_DRI_EXISTS=0
+export AMD64_LIBGL1_AMDGPU_PRO_OGLP_GLX_EXISTS=0
+export AMD64_LIBGLES1_AMDGPU_PRO_OGLP_EXISTS=0
+export AMD64_LIBGLES2_AMDGPU_PRO_OGLP_EXISTS=0
+export I386_LIBEGL1_AMDGPU_PRO_OGLP_EXISTS=0
+export I386_LIBGL1_AMDGPU_PRO_OGLP_DRI_EXISTS=0
+export I386_LIBGL1_AMDGPU_PRO_OGLP_GLX_EXISTS=0
+export I386_LIBGLES1_AMDGPU_PRO_OGLP_EXISTS=0
+export I386_LIBGLES2_AMDGPU_PRO_OGLP_EXISTS=0
+export AMD64_VULKAN_AMDGPU_PRO_EXISTS=0
+export I386_VULKAN_AMDGPU_PRO_EXISTS=0
+export AMD64_AMDVLK_EXISTS=0
+export I386_AMDVLK_EXISTS=0
 
 # Add firmware
 
@@ -20,7 +42,9 @@ rm -r /usr/lib/firmware/amdgpu || echo
 
 ln -s /usr/src/amdgpu-official/firmware/amdgpu /usr/lib/firmware/
 
-#
+# Check files and packages
+
+### Check if library paths are disables
 
 cat /etc/ld.so.conf.d/10-amdgpu-pro.conf | grep "#" && export PRO_DISABLED=1
 
@@ -30,9 +54,78 @@ cat /etc/ld.so.conf.d/10-amdgpu-pro-x86_64.conf | grep "#" && export BIN_AMD_DIS
 
 cat /etc/ld.so.conf.d/10-amdgpu-pro-i386.conf | grep "#" && export BIN_INTEL_DISABLED=1
 
+### Check if amf libraries exist
+
 ls /opt/amdgpu-pro/lib/x86_64-linux-gnu/libamdenc* && export ENC_EXISTS=1
 
 ls /opt/amdgpu-pro/lib/x86_64-linux-gnu/libamf* && export AMF_EXISTS=1
+
+### Check if amd64 opencl packages exist
+
+dpkg -s opencl-legacy-amdgpu-pro-icd:amd64 && export AMD64_OPENCL_LEGACY_AMDGPU_PRO_ICD_EXISTS=1
+
+dpkg -s ocl-icd-libopencl1-amdgpu-pro:amd64 && export AMD64_OCL_ICD_LIBOPENCL1_AMDGPU_PRO_EXISTS=1
+
+dpkg -s ocl-icd-libopencl1-amdgpu-pro-dev:amd64 && export AMD64_OCL_ICD_LIBOPENCL1_AMDGPU_PRO_DEV_EXISTS=1
+
+### Check if i386 opencl packages exist
+
+dpkg -s opencl-legacy-amdgpu-pro-icd:i386 && export I386_OPENCL_LEGACY_AMDGPU_PRO_ICD_EXISTS=1
+
+dpkg -s ocl-icd-libopencl1-amdgpu-pro:i386 && export I386_OCL_ICD_LIBOPENCL1_AMDGPU_PRO_EXISTS=1
+
+dpkg -s ocl-icd-libopencl1-amdgpu-pro-dev:i386 && export I386_OCL_ICD_LIBOPENCL1_AMDGPU_PRO_DEV_EXISTS=1
+
+
+### Check if amd64 opengl packages exist
+
+dpkg -s libgl1-amdgpu-pro-oglp-ext:amd64 && export AMD64_LIBGL1_AMDGPU_PRO_OGLP_EXT_EXISTS=1
+
+dpkg -s libgl1-amdgpu-pro-oglp-gbm:amd64 && export AMD64_LIBGL1_AMDGPU_PRO_OGLP_GBM_EXISTS=1
+
+
+dpkg -s libegl1-amdgpu-pro-oglp:amd64 && export AMD64_LIBEGL1_AMDGPU_PRO_OGLP_EXISTS=1
+
+dpkg -s libgl1-amdgpu-pro-oglp-dri:amd64 && export AMD64_LIBGL1_AMDGPU_PRO_OGLP_DRI_EXISTS=1
+
+dpkg -s libgl1-amdgpu-pro-oglp-glx:amd64 && export AMD64_LIBGL1_AMDGPU_PRO_OGLP_GLX_EXISTS=1
+
+dpkg -s libgles1-amdgpu-pro-oglp:amd64 && export AMD64_LIBGLES1_AMDGPU_PRO_OGLP_EXISTS=1
+
+dpkg -s libgles2-amdgpu-pro-oglp:amd64 && export AMD64_LIBGLES2_AMDGPU_PRO_OGLP_EXISTS=1
+
+### Check if i386 opengl packages exist
+
+dpkg -s libegl1-amdgpu-pro-oglp:i386 && export I386_LIBEGL1_AMDGPU_PRO_OGLP_EXISTS=1
+
+dpkg -s libgl1-amdgpu-pro-oglp-dri:i386 && export I386_LIBGL1_AMDGPU_PRO_OGLP_DRI_EXISTS=1
+
+dpkg -s libgl1-amdgpu-pro-oglp-glx:i386 && export I386_LIBGL1_AMDGPU_PRO_OGLP_GLX_EXISTS=1
+
+dpkg -s libgles1-amdgpu-pro-oglp:i386 && export I386_LIBGLES1_AMDGPU_PRO_OGLP_EXISTS=1
+
+dpkg -s libgles2-amdgpu-pro-oglp:i386 && export I386_LIBGLES2_AMDGPU_PRO_OGLP_EXISTS=1
+
+### Check if amd64 vulkan packages exist
+
+dpkg -s vulkan-amdgpu-pro:amd64 && export AMD64_VULKAN_AMDGPU_PRO_EXISTS=1
+
+### Check if i386 vulkan packages exist
+
+dpkg -s vulkan-amdgpu-pro:i386 && export I386_VULKAN_AMDGPU_PRO_EXISTS=1
+
+### Check if amd64 free vulkan packages exist
+
+dpkg -s amdvlk:amd64 && export AMD64_AMDVLK_EXISTS=1
+
+### Check if i386 free vulkan packages exist
+
+dpkg -s amdvlk:i386 && export I386_AMDVLK_EXISTS=1
+
+
+# Take Actions
+
+### Get rid of dangerous library paths
 
 if [[ "${PRODISABLED}" != 1 ]]; then
 	sed -i.old -e 's/^/#/' /etc/ld.so.conf.d/10-amdgpu-pro.conf
@@ -50,12 +143,147 @@ if [[ "${BIN_INTEL_DISABLED}" != 1 ]]; then
 	sed -i.old -e 's/^/#/' /etc/ld.so.conf.d/10-amdgpu-pro-i386.conf
 fi
 
+### Link AMF libraries to system lib path
+
 if [[ "${ENC_EXISTS}" != 0 ]]; then
 	ln -s /opt/amdgpu-pro/lib/x86_64-linux-gnu/libamdenc* /usr/lib/x86_64-linux-gnu/
 fi
 
 if [[ "${AMF_EXISTS}" != 0 ]]; then
 	ln -s /opt/amdgpu-pro/lib/x86_64-linux-gnu/libamf* /usr/lib/x86_64-linux-gnu/
+fi
+
+
+### Link amd64 opencl packages
+rm -rf /opt/amdgpu-pro/pika/opencl/x86_64-linux-gnu || echo
+if [[ "${AMD64_OPENCL_LEGACY_AMDGPU_PRO_ICD_EXISTS}" != 0 ]]; then
+	mkdir -p /opt/amdgpu-pro/pika/opencl/x86_64-linux-gnu
+	for i in $(dpkg-query -L opencl-legacy-amdgpu-pro-icd:amd64 | grep /x86_64-linux-gnu/ ); do ln -sfv $i /opt/amdgpu-pro/pika/opencl/x86_64-linux-gnu/ ; done
+fi
+
+if [[ "${AMD64_OCL_ICD_LIBOPENCL1_AMDGPU_PRO_EXISTS}" != 0 ]]; then
+	mkdir -p /opt/amdgpu-pro/pika/opencl/x86_64-linux-gnu
+	for i in $(dpkg-query -L ocl-icd-libopencl1-amdgpu-pro:amd64 | grep /x86_64-linux-gnu/ ); do ln -sfv $i /opt/amdgpu-pro/pika/opencl/x86_64-linux-gnu/ ; done
+fi
+if [[ "${AMD64_OCL_ICD_LIBOPENCL1_AMDGPU_PRO_DEV_EXISTS}" != 0 ]]; then
+	mkdir -p /opt/amdgpu-pro/pika/opencl/x86_64-linux-gnu
+	for i in $(dpkg-query -L  ocl-icd-libopencl1-amdgpu-pro-dev:amd64 | grep /x86_64-linux-gnu/ ); do ln -sfv $i /opt/amdgpu-pro/pika/opencl/x86_64-linux-gnu/ ; done
+fi
+
+### Link i386 opencl packages
+rm -rf /opt/amdgpu-pro/pika/opencl/i386-linux-gnu || echo
+if [[ "${I386_OPENCL_LEGACY_AMDGPU_PRO_ICD_EXISTS}" != 0 ]]; then
+	mkdir -p /opt/amdgpu-pro/pika/opencl/i386-linux-gnu
+	for i in $(dpkg-query -L opencl-legacy-amdgpu-pro-icd:i386 | grep /i386-linux-gnu/ ); do ln -sfv $i /opt/amdgpu-pro/pika/opencl/i386-linux-gnu/ ; done
+fi
+
+if [[ "${I386_OCL_ICD_LIBOPENCL1_AMDGPU_PRO_EXISTS}" != 0 ]]; then
+	mkdir -p /opt/amdgpu-pro/pika/opencl/i386-linux-gnu
+	for i in $(dpkg-query -L ocl-icd-libopencl1-amdgpu-pro:i386 | grep /i386-linux-gnu/ ); do ln -sfv $i /opt/amdgpu-pro/pika/opencl/i386-linux-gnu/ ; done
+fi
+if [[ "${I386_OCL_ICD_LIBOPENCL1_AMDGPU_PRO_DEV_EXISTS}" != 0 ]]; then
+	mkdir -p /opt/amdgpu-pro/pika/opencl/i386-linux-gnu
+	for i in $(dpkg-query -L  ocl-icd-libopencl1-amdgpu-pro-dev:i386 | grep /i386-linux-gnu/ ); do ln -sfv $i /opt/amdgpu-pro/pika/opencl/i386-linux-gnu/ ; done
+fi
+
+### Link amd64 opengl packages
+rm -rf /opt/amdgpu-pro/pika/opengl/x86_64-linux-gnu || echo
+
+if [[ "${AMD64_LIBGL1_AMDGPU_PRO_OGLP_EXT_EXISTS}" != 0 ]]; then
+	mkdir -p /opt/amdgpu-pro/pika/opengl/x86_64-linux-gnu
+	for i in $(dpkg-query -L libgl1-amdgpu-pro-oglp-ext:amd64 | grep /x86_64-linux-gnu/ ); do ln -sfv $i /opt/amdgpu-pro/pika/opengl/x86_64-linux-gnu/ ; done
+fi
+
+if [[ "${AMD64_LIBGL1_AMDGPU_PRO_OGLP_GBM_EXISTS}" != 0 ]]; then
+	mkdir -p /opt/amdgpu-pro/pika/opengl/x86_64-linux-gnu
+	for i in $(dpkg-query -L libgl1-amdgpu-pro-oglp-gbm:amd64 | grep /x86_64-linux-gnu/ ); do ln -sfv $i /opt/amdgpu-pro/pika/opengl/x86_64-linux-gnu/ ; done
+fi
+
+
+if [[ "${AMD64_LIBEGL1_AMDGPU_PRO_OGLP_EXISTS}" != 0 ]]; then
+	mkdir -p /opt/amdgpu-pro/pika/opengl/x86_64-linux-gnu
+	for i in $(dpkg-query -L libegl1-amdgpu-pro-oglp:amd64 | grep /x86_64-linux-gnu/ ); do ln -sfv $i /opt/amdgpu-pro/pika/opengl/x86_64-linux-gnu/ ; done
+fi
+
+if [[ "${AMD64_LIBGL1_AMDGPU_PRO_OGLP_DRI_EXISTS}" != 0 ]]; then
+	mkdir -p /opt/amdgpu-pro/pika/opengl/x86_64-linux-gnu
+	for i in $(dpkg-query -L libgl1-amdgpu-pro-oglp-dri:amd64 | grep /x86_64-linux-gnu/ ); do ln -sfv $i /opt/amdgpu-pro/pika/opengl/x86_64-linux-gnu/ ; done
+fi
+
+if [[ "${AMD64_LIBGL1_AMDGPU_PRO_OGLP_GLX_EXISTS}" != 0 ]]; then
+	mkdir -p /opt/amdgpu-pro/pika/opengl/x86_64-linux-gnu
+	for i in $(dpkg-query -L libgl1-amdgpu-pro-oglp-glx:amd64 | grep /x86_64-linux-gnu/ ); do ln -sfv $i /opt/amdgpu-pro/pika/opengl/x86_64-linux-gnu/ ; done
+fi
+
+if [[ "${AMD64_LIBGLES1_AMDGPU_PRO_OGLP_EXISTS}" != 0 ]]; then
+	mkdir -p /opt/amdgpu-pro/pika/opengl/x86_64-linux-gnu
+	for i in $(dpkg-query -L libgles1-amdgpu-pro-oglp:amd64 | grep /x86_64-linux-gnu/ ); do ln -sfv $i /opt/amdgpu-pro/pika/opengl/x86_64-linux-gnu/ ; done
+fi
+
+if [[ "${AMD64_LIBGLES2_AMDGPU_PRO_OGLP_EXISTS}" != 0 ]]; then
+	mkdir -p /opt/amdgpu-pro/pika/opengl/x86_64-linux-gnu
+	for i in $(dpkg-query -L libgles2-amdgpu-pro-oglp:amd64 | grep /x86_64-linux-gnu/ ); do ln -sfv $i /opt/amdgpu-pro/pika/opengl/x86_64-linux-gnu/ ; done
+fi
+
+### Link i386 opengl packages
+rm -rf /opt/amdgpu-pro/pika/opengl/i386-linux-gnu || echo
+
+if [[ "${I386_LIBEGL1_AMDGPU_PRO_OGLP_EXISTS}" != 0 ]]; then
+	mkdir -p /opt/amdgpu-pro/pika/opengl/i386-linux-gnu
+	for i in $(dpkg-query -L libegl1-amdgpu-pro-oglp:i386 | grep /i386-linux-gnu/ ); do ln -sfv $i /opt/amdgpu-pro/pika/opengl/i386-linux-gnu/ ; done
+fi
+
+if [[ "${I386_LIBGL1_AMDGPU_PRO_OGLP_DRI_EXISTS}" != 0 ]]; then
+	mkdir -p /opt/amdgpu-pro/pika/opengl/i386-linux-gnu
+	for i in $(dpkg-query -L libgl1-amdgpu-pro-oglp-dri:i386 | grep /i386-linux-gnu/ ); do ln -sfv $i /opt/amdgpu-pro/pika/opengl/i386-linux-gnu/ ; done
+fi
+
+if [[ "${I386_LIBGL1_AMDGPU_PRO_OGLP_GLX_EXISTS}" != 0 ]]; then
+	mkdir -p /opt/amdgpu-pro/pika/opengl/i386-linux-gnu
+	for i in $(dpkg-query -L libgl1-amdgpu-pro-oglp-glx:i386 | grep /i386-linux-gnu/ ); do ln -sfv $i /opt/amdgpu-pro/pika/opengl/i386-linux-gnu/ ; done
+fi
+
+if [[ "${I386_LIBGLES1_AMDGPU_PRO_OGLP_EXISTS}" != 0 ]]; then
+	mkdir -p /opt/amdgpu-pro/pika/opengl/i386-linux-gnu
+	for i in $(dpkg-query -L libgles1-amdgpu-pro-oglp:i386 | grep /i386-linux-gnu/ ); do ln -sfv $i /opt/amdgpu-pro/pika/opengl/i386-linux-gnu/ ; done
+fi
+
+if [[ "${I386_LIBGLES2_AMDGPU_PRO_OGLP_EXISTS}" != 0 ]]; then
+	mkdir -p /opt/amdgpu-pro/pika/opengl/i386-linux-gnu
+	for i in $(dpkg-query -L libgles2-amdgpu-pro-oglp:i386 | grep /i386-linux-gnu/ ); do ln -sfv $i /opt/amdgpu-pro/pika/opengl/i386-linux-gnu/ ; done
+fi
+
+### Link amd64 vulkan packages
+rm -rf /opt/amdgpu-pro/pika/vulkan/x86_64-linux-gnu || echo
+if [[ "${AMD64_VULKAN_AMDGPU_PRO_EXISTS}" != 0 ]]; then
+	mkdir -p /opt/amdgpu-pro/pika/vulkan/x86_64-linux-gnu
+	for i in $(dpkg-query -L vulkan-amdgpu-pro:amd64 | grep /x86_64-linux-gnu/ ); do ln -sfv $i //opt/amdgpu-pro/pika/vulkan/x86_64-linux-gnu/ ; done
+fi
+
+### Link i386 vulkan packages
+rm -rf /opt/amdgpu-pro/pika/vulkan/i386-linux-gnu || echo
+if [[ "${I386_VULKAN_AMDGPU_PRO_EXISTS}" != 0 ]]; then
+	mkdir -p /opt/amdgpu-pro/pika/vulkan/i386-linux-gnu
+	for i in $(dpkg-query -L vulkan-amdgpu-pro:i386 | grep /i386-linux-gnu/ ); do ln -sfv $i //opt/amdgpu-pro/pika/vulkan/i386-linux-gnu/ ; done
+fi
+
+### Link amd64 free vulkan packages
+rm -rf /opt/amdgpu/pika/vulkan/x86_64-linux-gnu || echo
+if [[ "${AMD64_AMDVLK_EXISTS}" != 0 ]]; then
+	mkdir -p /opt/amdgpu/pika/vulkan/x86_64-linux-gnu
+	for i in $(dpkg-query -L amdvlk:amd64 | grep /x86_64-linux-gnu/ ); do ln -sfv $i /opt/amdgpu/pika/vulkan/x86_64-linux-gnu/ ; done
+        mkdir -p /opt/amdgpu/share/vulkan/icd.d/
+        mv /etc/vulkan/icd.d/amd_icd*.json /opt/amdgpu/share/vulkan/icd.d/ || true
+fi
+
+### Link i386 free vulkan packages
+rm -rf /opt/amdgpu/pika/vulkan/i386-linux-gnu || echo
+if [[ "${I386_AMDVLK_EXISTS}" != 0 ]]; then
+	mkdir -p /opt/amdgpu/pika/vulkan/i386-linux-gnu
+	for i in $(dpkg-query -L amdvlk:i386 | grep /i386-linux-gnu/ ); do ln -sfv $i /opt/amdgpu/pika/vulkan/i386-linux-gnu/ ; done
+        mkdir -p /opt/amdgpu/share/vulkan/icd.d/
+        mv /etc/vulkan/icd.d/amd_icd*.json /opt/amdgpu/share/vulkan/icd.d/ || true
+
 fi
 
 ldconfig
