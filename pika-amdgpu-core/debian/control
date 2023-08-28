@@ -15,3 +15,10 @@ Provides: amdgpu-core, amdgpu-pro-core, amdgpu-dkms, amdgpu-pro-lib32
 Multi-Arch: foreign
 Description: Core meta package for Pro components of the unified amdgpu driver, with mesa priority.
 
+Package: amdgpu-drm
+Section: metapackages
+Architecture: all
+Depends: ${misc:Depends}, libdrm2-amdgpu
+Provides: amdgpu-core, amdgpu-pro-core, amdgpu-dkms, amdgpu-pro-lib32
+Multi-Arch: foreign
+Description: Core meta package for Pro components of the unified amdgpu driver drm
